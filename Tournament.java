@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.Scanner;
 public class Tournament /*extends Algorytm*/ {
 	static int NumAlgorytmes=1200000;
-	public static Algorytm TournamPlayers[]=new Algorytm[NumAlgorytmes];
+	public static Algorytm TournPlayers[]=new Algorytm[NumAlgorytmes];
 	static void equal(Algorytm a,Algorytm b)
 	
 	{
@@ -83,7 +83,7 @@ public class Tournament /*extends Algorytm*/ {
 		PrintWriter out = new PrintWriter(gamesbots);
 		System.out.print("Printwriter created \n");
 		//int NumAlgorytmes=1200000;//осторожно с числом алгоритмов и методами генерации - они заточены конкретно на эти условия!
-		Algorytm[] TournPlayers=new Algorytm[NumAlgorytmes];
+		//Algorytm[] TournPlayers=new Algorytm[NumAlgorytmes];
 		int beginpoint;
 		
 		int step=NumAlgorytmes/12;
@@ -114,7 +114,7 @@ public class Tournament /*extends Algorytm*/ {
 				}*/
 				System.out.printf("%d %s \n",i,TournPlayers[i].Algorytm);
 				out.printf("Name %d Algorytm %s \n",i,TournPlayers[i].Algorytm);
-				TournamPlayers[i].Algorytm(TournPlayers[i].Algorytm,i);//MISTAKE IS HERE - JAVA DOESN'T UNDERSTAND THAT TournPlayers[i].Algorytm(string,int) is a constructor
+				//TournamPlayers[i].Algorytm(TournPlayers[i].Algorytm,i);//MISTAKE IS HERE - JAVA DOESN'T UNDERSTAND THAT TournPlayers[i].Algorytm(string,int) is a constructor
 			}
 		}
 		out.close();
@@ -305,16 +305,19 @@ public class Tournament /*extends Algorytm*/ {
 	}
 	public static void main(String[] args)
 	{
-	//int i;
+	int i;
 	Tournament a=new Tournament();
 	System.out.print("Pogram running \n");
-
+	for(i=0;i<2000;i++)
+	{
+		System.out.printf("Name is %d Alg is %s \n",a.TournPlayers[i].Name,a.TournPlayers[i].Algorytm);
+	}
 	try
 	{
 	File robots = new File("bots.txt");
 	
 		
-		Round(1,a.TournamPlayers[0],a.TournamPlayers[56665],robots);//ТЕПЕРЬ ОСТАЛОСЬ ПЕРЕДАТЬ ЭЛЕМЕНТЫ МАССИВА В ФУНКЦИЮ - И ВСЁ
+		Round(1,a.TournPlayers[0],a.TournPlayers[56665],robots);//ТЕПЕРЬ ОСТАЛОСЬ ПЕРЕДАТЬ ЭЛЕМЕНТЫ МАССИВА В ФУНКЦИЮ - И ВСЁ
 	}
 	catch(IOException e)
 	{
