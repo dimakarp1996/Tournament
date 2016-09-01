@@ -3,34 +3,72 @@ public class Algorytm {
 
 	static int one;
 	static int two;
-	static int[] anothers=new int[6]; //поля 3-8
-	static String Algorytm;//8 цифр от 0 до 1 1я, от 0 до 3 вторая и от 0 до 5 3-8 цифры
-	static int numwins=0;//число побед
-	static int numlosses=0;
-	static int numdraws=0;
-	static int score=0;//число очков
-	static int rank=0;//место в рейтинге
+	//static int[] anothers=new int[5]; //поля 3-8
+	static String Algorytm;//7 цифр от 0 до 1 1я, от 0 до 5 вторая и от 0 до 9 3-7 цифры
+	static int numwins;//число побед
+	static int numlosses;
+	static int numdraws;
+	static int score;//число очков
+	static int rank;//место в рейтинге
 	static int Name; //собственный номер программы, уникальный и неповторимый
-	static Boolean HavePlayed=false;//играл ли он в этом раунде;
-	static int writeone(int arg)
+	static Boolean HavePlayed;//играл ли он в этом раунде;
+	static int one()
 	{
-		one=arg;
-		return 0;
+		return one;
 	}
-	static int writetwo(int arg)
+	static int two()
 	{
-		two=arg;
-		return 0;
+		return two;
 	}
-	static int writeanothers(int arg,int i)
+	static String getAlgorytm()
 	{
-		anothers[i]=arg;
-		return 0;
+		return Algorytm;
+	}
+	static int numwins()
+	{
+		return numwins;
+	}
+	static int numlosses()
+	{
+		return numlosses;
+	}
+	static int numdraws()
+	{
+		return numdraws;
+	}
+	static int score()
+	{
+		return score;
+	}
+	static int rank()
+	{
+		return rank;
+	}
+	static int Name()
+	{
+		return Name;
+	}
+	static boolean HavePlayed()
+	{
+		return HavePlayed;
+	}
+	 //toString(i,6) 
+	public  Algorytm(String Alg,int Nam) {
+
+		Algorytm=Alg;
+		Name=Nam;
+		one=Alg.charAt(0);
+		two=Alg.charAt(1);
+		HavePlayed=false;
+		numwins=0;
+		numlosses=0;
+		numdraws=0;
+		score=0;
+		rank=0;
+		
+		
 	}
 	
-	 //toString(i,6) 
-	public Algorytm() {
 		
-		
-	}
+	
 }

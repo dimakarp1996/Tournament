@@ -1,370 +1,123 @@
 import java.io.*;
 
 import java.util.Scanner;
-public class Tournament extends Algorytm {
-	static int NumAlgorytmes=373248;
-	public Algorytm TournamPlayers[]=new Algorytm[NumAlgorytmes];
+public class Tournament /*extends Algorytm*/ {
+	static int NumAlgorytmes=1200000;
+	public static Algorytm TournamPlayers[]=new Algorytm[NumAlgorytmes];
+	static void equal(Algorytm a,Algorytm b)
+	
+	{
+		int i;
+		a.one=b.one();
+		a.two=b.two();
+		a.Algorytm=b.getAlgorytm();
+		a.numwins=b.numwins();
+		a.numlosses=b.numlosses;
+		a.numdraws=b.numdraws;
+		a.score=b.score;
+		a.rank=b.rank;
+		a.Name=b.Name;
+		a.HavePlayed=b.HavePlayed;
+
+	}
+	
+	static String addnulls(String a,int length)//service function increasing length of string by adding zeros
+	{
+		int numnulls;
+		int i;
+		String nulls="";
+
+			numnulls=length-a.length();
+			if(numnulls==0)
+			{
+				return a;
+			}
+			if(numnulls<0)
+			{
+				System.out.print("Error");
+				return null;
+			}
+			if(numnulls>0)
+			for(i=0;i<numnulls;i++)
+			{
+				nulls=nulls+"0";
+			}
+			a=nulls+a;
+			if(a.length()!=length)
+			{
+				System.out.print("Error");
+				return null;
+			}
+			else return a;
+	}
 	public Tournament()
 	{
-
-		Generate();
-		 //Этот массив алгоритмов соревновать друг с другом по швейц.системе. Данные писатьв файл
-	}
-	public void Generate()//генерация алгоритмов
-	{
-		int i,j,k;
-		File gamesbots=new File("bots.txt");
-		
 		try
 		{
+			Generate();	
+			
+		}
+		catch(IOException e)
+		{
+		System.out.print("Exception");
+		}
+
+		 //Этот массив алгоритмов соревновать друг с другом по швейц.системе. Данные писатьв файл
+	}
+	
+	public static void Generate() throws IOException, FileNotFoundException//генерация алгоритмов
+	{
+		int i,k;
+
+		File gamesbots=new File("bots.txt");
+		
+		
 			if(!gamesbots.exists())
-			{
+			
 	            gamesbots.createNewFile();
-	        }
+	        
 		
 		
 
 		
 		PrintWriter out = new PrintWriter(gamesbots);
-		System.out.print("Printwriter created");
-		int NumAlgorytmes=373248;//осторожно с числом алгоритмов и методами генерации - они заточены конкретно на эти ссловия!
+		System.out.print("Printwriter created \n");
+		//int NumAlgorytmes=1200000;//осторожно с числом алгоритмов и методами генерации - они заточены конкретно на эти условия!
 		Algorytm[] TournPlayers=new Algorytm[NumAlgorytmes];
-		for(i=0;i<NumAlgorytmes/2;i++)
-		{
-			TournPlayers[i].one=0;
-			TournPlayers[i].Name=i;
-		}
-		System.out.print("1st massive half\n");
-		for(i=NumAlgorytmes/2;i<NumAlgorytmes;i++)
-		{
-			TournPlayers[i].one=1;
-			TournPlayers[i].Name=i;
-		}
-		System.out.print("2nd massive half\n");
-		//we divide these 2 massive to 4 parts, 2nd figure is from 0 to 3
-		for(i=0;i<NumAlgorytmes/8;i++)//от 0 до 555555 в шестеричной
-		{
-			TournPlayers[i].two=0;
-			//дальше у нас NumAlgorytmes/8 разных перестановок чисел от 0 до 6 на 6 позициях
-			//и эту 1/8 часть массива, а именно часть от 0 до 6 как раз ими и заполним
-			//аналогично и в остальных частях массива
-			
-			
-				TournPlayers[i].Algorytm=Integer.toString(i,6);
-				//заполнить недостающие элементы строки нулями!! важно!!
-
-				if(TournPlayers[i].Algorytm.length()==5)
-				{
-					TournPlayers[i].Algorytm="0"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==4)
-				{
-					TournPlayers[i].Algorytm="00"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==3)
-				{
-					TournPlayers[i].Algorytm="000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==2)
-				{
-					TournPlayers[i].Algorytm="0000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==1)
-				{
-					TournPlayers[i].Algorytm="000000"+TournPlayers[i].Algorytm;
-				}
-				TournPlayers[i].Algorytm="0"+Integer.toString(TournPlayers[i].two)+TournPlayers[i].Algorytm;
-				TournPlayers[i].one=TournPlayers[i].Algorytm.charAt(0);
-				//System.out.printf("%d %s \n",i,TournPlayers[i].Algorytm);
-				out.printf("Name %d Algorytm %s \n",i,TournPlayers[i].Algorytm);
-				for(k=0;k<6;k++)
-				{
-				TournPlayers[i].anothers[k]=TournPlayers[i].Algorytm.charAt(k);
-				}
-				
-		}		
-			
+		int beginpoint;
 		
-		System.out.print("1st massive octave\n");
-		for(i=NumAlgorytmes/8;i<NumAlgorytmes/4;i++)
+		int step=NumAlgorytmes/12;
+		for(beginpoint=0;beginpoint<NumAlgorytmes;beginpoint=beginpoint+step)//recording to each part of the massive
 		{
-			TournPlayers[i].two=1;
-				j=i-NumAlgorytmes/8;
-				TournPlayers[i].Algorytm=Integer.toString(j,6);
-				if(TournPlayers[i].Algorytm.length()==5)
+			for(i=beginpoint;i<beginpoint+step;i++)//recording into one of parts
+			{
+				TournPlayers[i].Name=i;
+				for(k=0;k<(NumAlgorytmes/(2*step));k++)
 				{
-					TournPlayers[i].Algorytm="0"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==4)
+					if((beginpoint==k*step)||(beginpoint==k*step+NumAlgorytmes/2))
+					{
+						TournPlayers[i].two=k;
+					}
+					if((beginpoint<NumAlgorytmes/2))
+					{
+						TournPlayers[i].one=0;
+					}
+					if((beginpoint>=NumAlgorytmes/2))
+					{
+						TournPlayers[i].one=1;
+					}
+				}//we have recorded 2nd element so now we need to record anothers
+				TournPlayers[i].Algorytm=Integer.toString(TournPlayers[i].one)+Integer.toString(TournPlayers[i].two)+addnulls(Integer.toString(i-beginpoint),5);
+				/*for(j=0;j<5;j++)
 				{
-					TournPlayers[i].Algorytm="00"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==3)
-				{
-					TournPlayers[i].Algorytm="000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==2)
-				{
-					TournPlayers[i].Algorytm="0000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==1)
-				{
-					TournPlayers[i].Algorytm="000000"+TournPlayers[i].Algorytm;
-				}
-				TournPlayers[i].Algorytm="0"+Integer.toString(TournPlayers[i].two)+TournPlayers[i].Algorytm;
-				TournPlayers[i].one=TournPlayers[i].Algorytm.charAt(0);
-				//System.out.printf("%d %s \n",i,TournPlayers[i].Algorytm);
+					TournPlayers[i].anothers[j]=TournPlayers[i].Algorytm.charAt(j+2);
+				}*/
+				System.out.printf("%d %s \n",i,TournPlayers[i].Algorytm);
 				out.printf("Name %d Algorytm %s \n",i,TournPlayers[i].Algorytm);
-				for(k=0;k<6;k++)
-				{
-				TournPlayers[i].anothers[k]=TournPlayers[i].Algorytm.charAt(k);
-				}
-		}
-		System.out.print("2nd massive octave\n");
-		for(i=NumAlgorytmes/4;i<3*NumAlgorytmes/8;i++)
-		{
-			TournPlayers[i].two=2;
-			
-				TournPlayers[i].Algorytm=Integer.toString(i-NumAlgorytmes/4,6);
-				//заполнить недостающие элементы строки нулями!! важно!!
-				if(TournPlayers[i].Algorytm.length()==5)
-				{
-					TournPlayers[i].Algorytm="0"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==4)
-				{
-					TournPlayers[i].Algorytm="00"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==3)
-				{
-					TournPlayers[i].Algorytm="000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==2)
-				{
-					TournPlayers[i].Algorytm="0000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==1)
-				{
-					TournPlayers[i].Algorytm="000000"+TournPlayers[i].Algorytm;
-				}
-				TournPlayers[i].Algorytm="0"+Integer.toString(TournPlayers[i].two)+TournPlayers[i].Algorytm;
-				TournPlayers[i].one=TournPlayers[i].Algorytm.charAt(0);
-				//System.out.printf("%d %s \n",i,TournPlayers[i].Algorytm);
-				out.printf("Name %d Algorytm %s \n",i,TournPlayers[i].Algorytm);
-				for(k=0;k<6;k++)
-				{
-				TournPlayers[i].anothers[k]=TournPlayers[i].Algorytm.charAt(k);
-				}
-		}
-		System.out.print("3rd massive octave\n");
-		for(i=3*NumAlgorytmes/8;i<NumAlgorytmes/2;i++)
-		{
-			TournPlayers[i].two=3;
-			
-				TournPlayers[i].Algorytm=Integer.toString(i-3*NumAlgorytmes/8,6);
-				//заполнить недостающие элементы строки нулями!! важно!!
-				if(TournPlayers[i].Algorytm.length()==5)
-				{
-					TournPlayers[i].Algorytm="0"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==4)
-				{
-					TournPlayers[i].Algorytm="00"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==3)
-				{
-					TournPlayers[i].Algorytm="000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==2)
-				{
-					TournPlayers[i].Algorytm="0000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==1)
-				{
-					TournPlayers[i].Algorytm="000000"+TournPlayers[i].Algorytm;
-				}
-				TournPlayers[i].Algorytm="0"+Integer.toString(TournPlayers[i].two)+TournPlayers[i].Algorytm;
-				TournPlayers[i].one=TournPlayers[i].Algorytm.charAt(0);
-				//System.out.printf("%d %s \n",i,TournPlayers[i].Algorytm);
-				out.printf("Name %d Algorytm %s \n",i,TournPlayers[i].Algorytm);
-				for(k=0;k<6;k++)
-				{
-				TournPlayers[i].anothers[k]=TournPlayers[i].Algorytm.charAt(k);
-				}
-		}
-		System.out.print("4th massive octave\n");
-		for(i=NumAlgorytmes/2;i<5*NumAlgorytmes/8;i++)
-		{
-			TournPlayers[i].two=0;
-			
-				TournPlayers[i].Algorytm=Integer.toString(i-NumAlgorytmes/2,6);
-				//заполнить недостающие элементы строки нулями!! важно!!
-				if(TournPlayers[i].Algorytm.length()==5)
-				{
-					TournPlayers[i].Algorytm="0"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==4)
-				{
-					TournPlayers[i].Algorytm="00"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==3)
-				{
-					TournPlayers[i].Algorytm="000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==2)
-				{
-					TournPlayers[i].Algorytm="0000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==1)
-				{
-					TournPlayers[i].Algorytm="000000"+TournPlayers[i].Algorytm;
-				}
-				TournPlayers[i].Algorytm="1"+Integer.toString(TournPlayers[i].two)+TournPlayers[i].Algorytm;
-				TournPlayers[i].one=TournPlayers[i].Algorytm.charAt(0);
-				//System.out.printf("%d %s \n",i,TournPlayers[i].Algorytm);
-				out.printf("Name %d Algorytm %s \n",i,TournPlayers[i].Algorytm);
-				for(k=0;k<6;k++)
-				{
-				TournPlayers[i].anothers[k]=TournPlayers[i].Algorytm.charAt(k);
-				}
-		}
-		System.out.print("5th massive octave\n");
-		for(i=5*NumAlgorytmes/8;i<3*NumAlgorytmes/4;i++)
-		{
-			TournPlayers[i].two=1;
-			
-				TournPlayers[i].Algorytm=Integer.toString(i-5*NumAlgorytmes/8,6);
-				//заполнить недостающие элементы строки нулями!! важно!!
-				if(TournPlayers[i].Algorytm.length()==5)
-				{
-					TournPlayers[i].Algorytm="0"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==4)
-				{
-					TournPlayers[i].Algorytm="00"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==3)
-				{
-					TournPlayers[i].Algorytm="000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==2)
-				{
-					TournPlayers[i].Algorytm="0000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==1)
-				{
-					TournPlayers[i].Algorytm="000000"+TournPlayers[i].Algorytm;
-				}
-				TournPlayers[i].Algorytm="1"+Integer.toString(TournPlayers[i].two)+TournPlayers[i].Algorytm;
-				TournPlayers[i].one=TournPlayers[i].Algorytm.charAt(0);
-				//System.out.printf("%d %s \n",i,TournPlayers[i].Algorytm);
-				out.printf("Name %d Algorytm %s \n",i,TournPlayers[i].Algorytm);
-				for(k=0;k<6;k++)
-				{
-				TournPlayers[i].anothers[k]=TournPlayers[i].Algorytm.charAt(k);
-				}
-		}
-		System.out.print("6th massive octave\n");
-		for(i=3*NumAlgorytmes/4;i<7*NumAlgorytmes/8;i++)
-		{
-			TournPlayers[i].two=2;
-			
-				TournPlayers[i].Algorytm=Integer.toString(i-3*NumAlgorytmes/4,6);
-				//заполнить недостающие элементы строки нулями!! важно!!
-				if(TournPlayers[i].Algorytm.length()==5)
-				{
-					TournPlayers[i].Algorytm="0"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==4)
-				{
-					TournPlayers[i].Algorytm="00"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==3)
-				{
-					TournPlayers[i].Algorytm="000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==2)
-				{
-					TournPlayers[i].Algorytm="0000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==1)
-				{
-					TournPlayers[i].Algorytm="000000"+TournPlayers[i].Algorytm;
-				}
-				TournPlayers[i].Algorytm="1"+Integer.toString(TournPlayers[i].two)+TournPlayers[i].Algorytm;
-				TournPlayers[i].one=TournPlayers[i].Algorytm.charAt(0);
-				//System.out.printf("%d %s \n",i,TournPlayers[i].Algorytm);
-				out.printf("Name %d Algorytm %s \n",i,TournPlayers[i].Algorytm);
-				for(k=0;k<6;k++)
-				{
-				TournPlayers[i].anothers[k]=TournPlayers[i].Algorytm.charAt(k);
-				}
-		}
-		System.out.print("7th massive octave\n");
-		for(i=7*NumAlgorytmes/8;i<NumAlgorytmes;i++)
-		{
-			TournPlayers[i].two=3;
-			
-				TournPlayers[i].Algorytm=Integer.toString(i-7*NumAlgorytmes/8,6);
-				//заполнить недостающие элементы строки нулями!! важно!!
-				if(TournPlayers[i].Algorytm.length()==7)
-				{
-					break;
-				}
-				if(TournPlayers[i].Algorytm.length()==5)
-				{
-					TournPlayers[i].Algorytm="0"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==4)
-				{
-					TournPlayers[i].Algorytm="00"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==3)
-				{
-					TournPlayers[i].Algorytm="000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==2)
-				{
-					TournPlayers[i].Algorytm="0000"+TournPlayers[i].Algorytm;
-				}
-				if(TournPlayers[i].Algorytm.length()==1)
-				{
-					TournPlayers[i].Algorytm="000000"+TournPlayers[i].Algorytm;
-				}
-				TournPlayers[i].Algorytm="1"+Integer.toString(TournPlayers[i].two)+TournPlayers[i].Algorytm;
-				TournPlayers[i].one=TournPlayers[i].Algorytm.charAt(0);
-				//System.out.printf("%d %s \n",i,TournPlayers[i].Algorytm);
-				out.printf("Name %d Algorytm %s \n",i,TournPlayers[i].Algorytm);
-				for(k=0;k<6;k++)
-				{
-				TournPlayers[i].anothers[k]=TournPlayers[i].Algorytm.charAt(k);
-				}
+				TournamPlayers[i].Algorytm(TournPlayers[i].Algorytm,i);//MISTAKE IS HERE - JAVA DOESN'T UNDERSTAND THAT TournPlayers[i].Algorytm(string,int) is a constructor
 			}
-		System.out.print("8th massive octave\n");
-		 for(i=0;i<NumAlgorytmes;i++)
-         {
-         	TournamPlayers[i]=TournPlayers[i];
-         }
-		 out.close();
 		}
-			catch(IOException e)
-		{
-				System.out.println("Exception");
-
-	
-		}
-				finally
-				{
-
-		           
-		            System.out.print("End");
-		           
-		        }
-		
-	
-
-			
-
+		out.close();
 	}
 	public static int invert(int a)//special function for convenience
 	{
@@ -376,65 +129,129 @@ public class Tournament extends Algorytm {
 
 	
 	public static void Round(int NumTour,Algorytm First,Algorytm Second,File file) throws IOException//competition of two algorytms - record to file and record table. 
-	//You NEED file bots.txt which should be randomly generated by Generate() before starting the function
-	{
+	//You NEED file bots.txt which should be randomly generated by Generate() beforestarting the function
+	{//we assume that all algorytms are defined correctly and can't cause mistakes
+		if((Second.Algorytm.length()!=7)||(First.Algorytm.length()!=7))
+		{
+			System.out.print("Exception");
+			throw new IOException();
+		}
+		System.out.printf("First competing algorytm is %s \n", First.Algorytm);
+		System.out.printf("Second competing algorytm is %s \n", Second.Algorytm);
 		FileWriter writer = new FileWriter(file,true);
 		int WinWin=5;//both cooperate
 		int LoseLose=-5;//both betray
 		int WinLose=10;//1th betrays and 2nd cooperates
 		int LoseWin=-10;//1th cooperates and 2nd betrays;
-		int[] FirstActions=new int[8];
-		int[] SecondActions=new int[8];
+		int[] FirstActions=new int[7];
+		int[] SecondActions=new int[7];
 		int i;
-		for(i=0;i<8;i++)
+		for(i=0;i<7;i++)
 		{
-		FirstActions[i]=First.Algorytm.charAt(i);
-		SecondActions[i]=Second.Algorytm.charAt(i);
-		}//imported algorythms
-		//when program says "4" it repeats the pre-previous opponent's turn
-		//when program says "5" it makes turn opposite to the pre-previous opponent's turn
-		//when program says "2" it repeats the previous opponent's turn
-		//when program says "3" it makes turn opposite to the pre-previous opponent's turn
+		FirstActions[i]=(int)(First.Algorytm.charAt(i));
+		SecondActions[i]=(int)(Second.Algorytm.charAt(i));
+		}
+		System.out.printf("First competing algorytm interpreted as ");
+		for(i=0;i<7;i++)
+		{
+			System.out.printf("%d",FirstActions[i]);
+		}
+		System.out.printf("\n");
+		System.out.printf("Second competing algorytm interpreted as ", Second.Algorytm);
+		for(i=0;i<7;i++)
+		{
+			System.out.printf("%d",SecondActions[i]);
+		}
+		System.out.printf("\n");
+		//imported algorythms
+
+		//when program says "9" it makes turn opposite to the pre-previous opponent's turn
+		//when program says "8" it repeats the pre-previous opponent's turn
+		//when program says "7" it makes turn opposite to the pre-previous program's turn
+		//when program says "6" it repeats the pre-previous program's turn
+		//when program says "5" it makes turn opposite to the previous opponent's turn
+		//when program says "4" it repeats the previous opponent's turn
+		//when program says "3" it makes turn opposite to the previous program's turn
+		//when program says "2" it repeats the previous program's turn
 		//when program says "1" it cooperates
 		//when program says "0" it betrays
-		for(i=1;i<8;i++)
+		for(i=1;i<7;i++)
 		{
 			if(FirstActions[i]==2)
 			{
-				FirstActions[i]=SecondActions[i-1];
+				FirstActions[i]=FirstActions[i-1];
 			}
 			if(SecondActions[i]==2)
 			{
-				SecondActions[i]=FirstActions[i-1];
+				SecondActions[i]=SecondActions[i-1];
 			}
 			if(FirstActions[i]==3)
 			{
-				FirstActions[i]=invert(SecondActions[i-1]);
+				FirstActions[i]=invert(FirstActions[i-1]);
 			}
 			if(SecondActions[i]==3)
 			{
-				SecondActions[i]=invert(FirstActions[i-1]);
+				SecondActions[i]=invert(SecondActions[i-1]);
 			}
 			if(FirstActions[i]==4)
 			{
-				FirstActions[i]=SecondActions[i-2];
+				FirstActions[i]=SecondActions[i-1];
 			}
 			if(SecondActions[i]==4)
 			{
-				SecondActions[i]=FirstActions[i-2];
+				SecondActions[i]=FirstActions[i-1];
 			}
 			if(FirstActions[i]==5)
 			{
+				FirstActions[i]=invert(SecondActions[i-1]);
+			}
+			if(SecondActions[i]==5)
+			{
+				SecondActions[i]=invert(FirstActions[i-1]);
+			}
+			if(FirstActions[i]==6)
+			{
+				FirstActions[i]=FirstActions[i-2];
+			}
+			if(SecondActions[i]==6)
+			{
+				SecondActions[i]=SecondActions[i-2];
+			}
+			if(FirstActions[i]==7)
+			{
+				FirstActions[i]=invert(FirstActions[i-2]);
+			}
+			if(SecondActions[i]==7)
+			{
+				SecondActions[i]=invert(SecondActions[i-2]);
+			}
+			if(FirstActions[i]==8)
+			{
+				FirstActions[i]=SecondActions[i-2];
+			}
+			if(SecondActions[i]==8)
+			{
+				SecondActions[i]=FirstActions[i-2];
+			}
+			if(FirstActions[i]==9)
+			{
 				FirstActions[i]=invert(SecondActions[i-2]);
+			}
+			if(SecondActions[i]==9)
+			{
+				SecondActions[i]=invert(SecondActions[i-2]);
 			}
 		}
 		//now we transformed each algorythm to an array of "1"s and "0"s if will actually give
 		//so it's time to find out what score it will give to each program
 		int firstscore=0;
 		int secondscore=0;
-		for(i=0;i<8;i++)
+		for(i=0;i<7;i++)
 		{
-			
+			if(((FirstActions[i]!=0)&&(FirstActions[i]!=1))||((SecondActions[i]!=0)&&(SecondActions[i]!=1)))
+			{
+				System.out.print("Code didn't work properly");//wasn't read correctly
+			}
 			if((FirstActions[i]==0)&&(SecondActions[i]==0))
 			{
 				firstscore-=5;
@@ -488,22 +305,21 @@ public class Tournament extends Algorytm {
 	}
 	public static void main(String[] args)
 	{
-	int i;
+	//int i;
 	Tournament a=new Tournament();
-	//a.Generate();//it's already used
+	System.out.print("Pogram running \n");
+
 	try
 	{
 	File robots = new File("bots.txt");
 	
-		for(i=1;i<1000;i++)
-		{
-			System.out.printf("Name %d Alg %d /n",a.TournamPlayers[i].Name,a.TournamPlayers[i].Algorytm);
-		}
-		Round(1,a.TournamPlayers[0],a.TournamPlayers[55],robots);//ТЕПЕРЬ ОСТАЛОСЬ ПЕРЕДАТЬ ЭЛЕМЕНТЫ МАССИВА В ФУНКЦИЮ - И ВСЁ
+		
+		Round(1,a.TournamPlayers[0],a.TournamPlayers[56665],robots);//ТЕПЕРЬ ОСТАЛОСЬ ПЕРЕДАТЬ ЭЛЕМЕНТЫ МАССИВА В ФУНКЦИЮ - И ВСЁ
 	}
 	catch(IOException e)
 	{
 		System.out.println("Exception");
 	}
 	}
+	
 }
