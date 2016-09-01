@@ -1,9 +1,10 @@
 import java.io.*;
 import java.lang.Integer;
-import java.util.Scanner;
-public class Tournament /*extends Algorytm*/ {
+public class Tournament extends Algorytm {
 	static int NumAlgorytmes=1200000;
-	public  Algorytm TournPlayers[]=new Algorytm[NumAlgorytmes];
+	public Algorytm TournPlayers[]=new Algorytm[NumAlgorytmes];
+
+
 	 void equal(Algorytm a,Algorytm b)
 	
 	{
@@ -50,9 +51,11 @@ public class Tournament /*extends Algorytm*/ {
 			}
 			else return a;
 	}
-	public Tournament()
+	public Tournament(int Nam, String Arg)
 	{
-	/*try
+		super(1,"100");
+
+		try
 		{
 			Generate();	
 			
@@ -60,52 +63,49 @@ public class Tournament /*extends Algorytm*/ {
 		catch(IOException e)
 		{
 		System.out.print("Exception");
-		}*/
+		}
 
 		 //Этот массив алгоритмов соревновать друг с другом по швейц.системе. Данные писатьв файл
 	}
 	
 	public void Generate() throws IOException, FileNotFoundException//вовзращаемое значение - массив с алгоритмами!
 	{
-		int i,k;
 
+		int i,k;
+		
 		File gamesbots=new File("bots.txt");
 		
 		
 			if(!gamesbots.exists())
 			
 	            gamesbots.createNewFile();
-	        
-		
-		
-
 		
 		PrintWriter out = new PrintWriter(gamesbots);
 		System.out.print("Printwriter created \n");
 		//int NumAlgorytmes=1200000;//осторожно с числом алгоритмов и методами генерации - они заточены конкретно на эти условия!
 		//Algorytm[] TournPlayers=new Algorytm[NumAlgorytmes];
 		int beginpoint;
-		
+		 //Algorytm TournPlayers[]=new Algorytm[NumAlgorytmes];
 		int step=NumAlgorytmes/12;
 		for(beginpoint=0;beginpoint<NumAlgorytmes;beginpoint=beginpoint+step)//recording to each part of the massive
 		{
 			for(i=beginpoint;i<beginpoint+step;i++)//recording into one of parts
 			{
 				System.out.printf("i is %d",i);
-				TournPlayers[i].Name=i;
+				TournPlayers[i].Name(i);
 				for(k=0;k<(NumAlgorytmes/(2*step));k++)
 				{
 					if((beginpoint==k*step)||(beginpoint==k*step+NumAlgorytmes/2))
 					{
-						TournPlayers[i].two=k;
+						TournPlayers[i].two(k);
 					}
 					if((beginpoint<NumAlgorytmes/2))
 					{
-						TournPlayers[i].one=0;
+						TournPlayers[i].one(0);
 					}
 					if((beginpoint>=NumAlgorytmes/2))
 					{
-						TournPlayers[i].one=1;
+						TournPlayers[i].one(1);//i know that we can do without storing "two" and "one"separately. I'm going to fix it later
 					}
 				}//we have recorded 2nd element so now we need to record anothers
 				TournPlayers[i].Algorytm=Integer.toString(TournPlayers[i].one)+Integer.toString(TournPlayers[i].two)+addnulls(Integer.toString(i-beginpoint),5);
@@ -116,6 +116,10 @@ public class Tournament /*extends Algorytm*/ {
 				System.out.printf("%d %s \n",i,TournPlayers[i].Algorytm);
 				out.printf("Name %d Algorytm %s \n",i,TournPlayers[i].Algorytm);
 				//TournamPlayers[i].Algorytm(TournPlayers[i].Algorytm,i);//MISTAKE IS HERE - JAVA DOESN'T UNDERSTAND THAT TournPlayers[i].Algorytm(string,int) is a constructor
+			}
+			for(i=0;i<500;i++)
+			{
+				out.printf("Name %d Algorytm %s \n",i,TournPlayers[i].Algorytm);
 			}
 		}
 		out.close();
@@ -149,6 +153,7 @@ public class Tournament /*extends Algorytm*/ {
 		int[] SecondActions=new int[7];
 		int i;
 		char buf;
+		int j;
 		for(i=0;i<7;i++)
 		{
 		buf=First.Algorytm.charAt(i);
@@ -158,7 +163,7 @@ public class Tournament /*extends Algorytm*/ {
 		SecondActions[i]=Character.getNumericValue(buf);
 		//System.out.printf("at position %d char %c read as %d", i,buf,SecondActions[i]);
 		}
-		System.out.printf("First competing algorytm interpreted as ");//интерпретацию алгоритмов исправить!
+		/*System.out.printf("First competing algorytm interpreted as ");//интерпретацию алгоритмов исправить!
 		for(i=0;i<7;i++)
 		{
 			System.out.printf("%d",FirstActions[i]);
@@ -169,8 +174,7 @@ public class Tournament /*extends Algorytm*/ {
 		{
 			System.out.printf("%d",SecondActions[i]);
 		}
-		String buf;
-		System.out.printf("\n");
+		System.out.printf("\n");*/
 		//imported algorythms
 
 		//when program says "9" it makes turn opposite to the pre-previous opponent's turn
@@ -249,9 +253,14 @@ public class Tournament /*extends Algorytm*/ {
 			{
 				SecondActions[i]=invert(SecondActions[i-2]);
 			}
-			buf=Arrays.toString();
-			for(j=0;j<8;j++)
-			System.out.printf("First algorytm transformed as %d")
+			/*System.out.printf("First algorytm transformed as");
+			for(j=0;j<7;j++)
+			System.out.printf("%d",FirstActions[j]);
+			System.out.print("\n");
+			System.out.printf("Second algorytm transformed as");
+			for(j=0;j<7;j++)
+			System.out.printf("%d",SecondActions[j]);
+			System.out.print("\n");*/
 		}
 		//now we transformed each algorythm to an array of "1"s and "0"s if will actually give
 		//so it's time to find out what score it will give to each program
@@ -265,8 +274,8 @@ public class Tournament /*extends Algorytm*/ {
 			}
 			if((FirstActions[i]==0)&&(SecondActions[i]==0))
 			{
-				firstscore-=LoseLose;
-				secondscore-=LoseLose;
+				firstscore+=LoseLose;// not confuse + with -
+				secondscore+=LoseLose;
 			}
 			if((FirstActions[i]==1)&&(SecondActions[i]==1))
 			{
@@ -276,13 +285,14 @@ public class Tournament /*extends Algorytm*/ {
 			if((FirstActions[i]==1)&&(SecondActions[i]==0))
 			{
 				firstscore+=WinLose;
-				secondscore-=LoseWin;
+				secondscore+=LoseWin;
 			}
 			if((FirstActions[i]==0)&&(SecondActions[i]==1))
 			{
-				firstscore-=LoseWin;
+				firstscore+=LoseWin;
 				secondscore+=WinLose;
 			}
+			//System.out.printf("First score is %d second score is %d",firstscore,secondscore);
 		}
 		First.score=First.score+firstscore;
 		Second.score=Second.score+secondscore;
@@ -296,10 +306,10 @@ public class Tournament /*extends Algorytm*/ {
 			Second.numwins++;
 			First.numlosses++;
 		}
-		if(secondscore>firstscore)
+		if(secondscore==firstscore)
 		{
 			Second.numdraws++;
-			First.numlosses++;
+			First.numdraws++;
 		}
 
 		String s=First.Name+" in tour "+Integer.toString(NumTour)+ " gained "+Integer.toString(firstscore)+" versus "+Second.Name+" total scores "+First.score+" wins "+First.numwins+" loses "+First.numlosses+" draws "+First.numdraws+"\n";
@@ -317,20 +327,13 @@ public class Tournament /*extends Algorytm*/ {
 	public static void main(String[] args)
 	{
 	int i;
-	/*Tournament a=new Tournament();
-		try
-		{
-		a.Generate();
-		}
-		catch(IOException e)
-		{
-		System.out.print("Exception");
-		}
+
+		Tournament a=new Tournament(1,"4544");
 		System.out.print("Pogram running \n");
 		for(i=0;i<2000;i++)
 		{
-			System.out.printf("Name is %d Alg is %s \n",a.TournPlayers[i].Name,a.TournPlayers[i].Algorytm);
-		}*/ // FIX "GENERATE" FUNCTION - fields with which it works shouldn't be static (otherwise only one example can be stored) but it they aren't static we get nullpointerexception
+			//System.out.printf("Name is %d Alg is %s \n",a.TournPlayers[i].Name,a.TournPlayers[i].Algorytm);
+		} // FIX "GENERATE" FUNCTION - fields with which it works shouldn't be static (otherwise only one example can be stored) but it they aren't static we get nullpointerexception
 		Algorytm first=new Algorytm(834567,"1234567");
 		//System.out.printf("First competing algorytm is %s \n", first.Algorytm);
 		Algorytm second=new Algorytm(976198 ,"1376198");

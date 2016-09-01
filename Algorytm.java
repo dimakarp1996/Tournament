@@ -12,47 +12,47 @@ public class Algorytm {
 	int rank;//место в рейтинге
 	int Name; //собственный номер программы, уникальный и неповторимый
 	Boolean HavePlayed;//играл ли он в этом раунде;
-	/*static int one()
+	
+	void one(int x)
 	{
-		return one;
+		one=x;
 	}
-	static int two()
+	void two(int x)
 	{
-		return two;
+		two=x;
 	}
-	static String getAlgorytm()
+	void Algorytm(String x)
 	{
-		return Algorytm;
+		Algorytm=x;
 	}
-	static int numwins()
+	void numwins(int x)
 	{
-		return numwins;
+		numwins=x;
 	}
-	static int numlosses()
+	void numlosses(int x)
 	{
-		return numlosses;
+		numlosses=x;
 	}
-	static int numdraws()
+	void numdraws(int x)
 	{
-		return numdraws;
+		numdraws=x;
 	}
-	static int score()
+	void score(int x)
 	{
-		return score;
+		score=x;
 	}
-	static int rank()
+	void rank(int x)
 	{
-		return rank;
+		rank=x;
 	}
-	static int Name()
+	void Name(int x)
 	{
-		return Name;
+		Name=x;
 	}
-	static boolean HavePlayed()
+	void HavePlayed(boolean x)
 	{
-		return HavePlayed;
-	}*/
-	 //toString(i,6) 
+		HavePlayed=x;
+	}
 	public Algorytm(int Nam,String Alg) 
 	{
 
