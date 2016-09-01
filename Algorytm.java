@@ -1,18 +1,18 @@
 
 public class Algorytm {
 
-	static int one;
-	static int two;
+	int one;
+	int two;
 	//static int[] anothers=new int[5]; //поля 3-8
-	static String Algorytm;//7 цифр от 0 до 1 1я, от 0 до 5 вторая и от 0 до 9 3-7 цифры
-	static int numwins;//число побед
-	static int numlosses;
-	static int numdraws;
-	static int score;//число очков
-	static int rank;//место в рейтинге
-	static int Name; //собственный номер программы, уникальный и неповторимый
-	static Boolean HavePlayed;//играл ли он в этом раунде;
-	static int one()
+	String Algorytm;//7 цифр от 0 до 1 1я, от 0 до 5 вторая и от 0 до 9 3-7 цифры
+	int numwins;//число побед
+	int numlosses;
+	 int numdraws;
+	int score;//число очков
+	int rank;//место в рейтинге
+	int Name; //собственный номер программы, уникальный и неповторимый
+	Boolean HavePlayed;//играл ли он в этом раунде;
+	/*static int one()
 	{
 		return one;
 	}
@@ -51,9 +51,10 @@ public class Algorytm {
 	static boolean HavePlayed()
 	{
 		return HavePlayed;
-	}
+	}*/
 	 //toString(i,6) 
-	public  Algorytm(String Alg,int Nam) {
+	public Algorytm(int Nam,String Alg) 
+	{
 
 		Algorytm=Alg;
 		Name=Nam;
